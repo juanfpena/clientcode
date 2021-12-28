@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>My piece of shit Application</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+  
+</head>
+
+<body>
+<h1>Calculator</h1>
+<form action="" method='GET'>
+    <p>
+        <label for="a">a</label>
+        <input type="number" name="a" id="a">
+    </p>
+    <p>
+        <label for="b">b</label>
+        <input type="number" name="b" id="b">
+    </p>
+    <p>
+        <label for="operation">operator</label>
+        <select name="operation" id="operation">
+            <option value="sum">Sum</option>
+            <option value="sub">Subtract</option>
+            <option value="mul">Multiply</option>
+            <option value="div">Divide</option>
+        </select>
+    </p>
+    <input type="button" value="calculate" onclick="calculatorResult(this.form)">
+</form>
+
+</body>
+  
+<script lang="JavaScript">
+    function calculatorResult (form) {
+        var aVar = parseInt(form.a.value);
+        var bVar = parseInt(form.b.value);
+        var opVar = form.operation.value;
+        
+        if (opVar == 'sum'){
+            alert (aVar + bVar)
+        };
+
+        if (opVar == 'sub'){
+            alert (aVar - bVar)
+        };
+
+        if (opVar == 'mul'){
+            alert (aVar * bVar)
+        };
+
+        if (opVar == 'div'){
+            alert (aVar / bVar)
+        }
+    }
+</script>
+
+</html>
