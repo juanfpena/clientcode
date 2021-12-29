@@ -16,51 +16,117 @@
 
 <body>
 <h1>Calculator</h1>
-<form action="" method='GET'>
+<form id="calculatorForm">
     <p>
         <label for="a">a</label>
-        <input type="number" name="a" id="a">
+        <input type="number" name="a" id="calcA">
     </p>
     <p>
         <label for="b">b</label>
-        <input type="number" name="b" id="b">
+        <input type="number" name="b" id="calcB">
     </p>
     <p>
         <label for="operation">operator</label>
-        <select name="operation" id="operation">
+        <select name="operation" id="calcOperation">
             <option value="sum">Sum</option>
             <option value="sub">Subtract</option>
             <option value="mul">Multiply</option>
             <option value="div">Divide</option>
         </select>
     </p>
-    <input type="button" value="calculate" onclick="calculatorResult(this.form)">
+    <input type="button" value="calculate" id="botonCalc">
 </form>
+<div>
+    <p>
+        <label for="Result">Result: </label>
+        <label for="resultCalculator" id='calcResult'></label>
+    </p>
+</div>
 
+<h1>Date-ftm</h1>
+<form id="dateFmtForm">
+    <p>
+        <label for="date">Date</label>
+        <input type="datetime" name="date" id="dateInput">
+    </p>
+    <p>
+        <label for="days">Days</label>
+        <input type="number" name="days" id="daysInput">
+    </p>
+    <input type="button" value="add days" id="botonDate">
+</form>
+    <p>
+        <label for="Date">Date: </label>
+        <label for="resultDate" id='dateResult'></label>
+    </p>
 </body>
-  
-<script lang="JavaScript">
-    function calculatorResult (form) {
-        var aVar = parseInt(form.a.value);
-        var bVar = parseInt(form.b.value);
-        var opVar = form.operation.value;
-        
-        if (opVar == 'sum'){
-            alert (aVar + bVar)
-        };
 
-        if (opVar == 'sub'){
-            alert (aVar - bVar)
-        };
+<script src="index.js"></script>
+<script>
 
-        if (opVar == 'mul'){
-            alert (aVar * bVar)
-        };
+    const calcForm = document.querySelector('#calculatorForm');
+    const dateForm = document.querySelector('#dateFmtForm');
+    const host_url = 'http://127.0.0.1:5000';
 
-        if (opVar == 'div'){
-            alert (aVar / bVar)
+    function ajaxCalc () {
+        const xhr = new XMLHttpRequest();
+        const calc_url = host_url + '/services/calculator';
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log(this.responseText);
+                document.getElementById('calcResult').innerHTML = JSON.parse(this.responseText)['result']
+            }
         }
-    }
+
+        let arg1 = document.getElementById('calcA').value;
+        let arg2 = document.getElementById('calcB').value;
+        let operation = document.getElementById('calcOperation').value;
+
+        xhr.open('POST', calc_url);
+        xhr.setRequestHeader("Content-Type", "application/json")
+        xhr.send(JSON.stringify({
+            "a": arg1,
+            "b": arg2,
+            "operation": operation
+        }));
+    };
+
+
+    function ajaxDate () {
+        const xhr = new XMLHttpRequest();
+        const date_url = host_url + '/services/date-fmt';
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log(this.responseText);
+                document.getElementById('dateResult').innerHTML = JSON.parse(this.responseText)['date']
+            };
+        };
+
+        let date = document.getElementById('dateInput').value;
+        let days = document.getElementById('daysInput').value;
+
+        xhr.open('POST', date_url)
+        xhr.setRequestHeader("Content-Type", "application/json")
+        xhr.send(JSON.stringify({
+            "date": date,
+            "days": days
+        }));
+    };
+
+
+
+    document.getElementById('botonDate').addEventListener('click', function () {
+        ajaxDate()
+    });
+
+
+
+    document.getElementById('botonCalc').addEventListener('click', function () {
+        ajaxCalc();
+    });
+
 </script>
 
 </html>
